@@ -5,12 +5,12 @@ ICASSP 2020-2020 IEEE International Conference on Acoustics, Speech and Signal P
 # Requirements
 This was originally written, and heavily relies on using:
 
-# Specifically
-* python >= 3.7
+ # Specifically
+ * python >= 3.7
 
-* scipy ~= 1.5.2
+ * scipy ~= 1.5.2
 
-* pytorch >= 1.6
+ * pytorch >= 1.6
 
 # Dataset Info.
 The dataset used in this study has been extended as:
