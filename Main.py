@@ -113,7 +113,7 @@ for i in range(1, SubjectNum):
 
         for batchIdx, (inputs, label, Origin_label) in enumerate(trainloader):
             inputs = inputs[:, np.newaxis, :, :]
-            inputs, targets, targets_origin, = inputs.to(device, dtype=torch.float), label.to(device, dtype=torch.long), Origin_label.to(device, dtype=torch.long)
+            inputs, label, Origin_label, = inputs.to(device, dtype=torch.float), label.to(device, dtype=torch.long), Origin_label.to(device, dtype=torch.long)
             optimizer.zero_grad()
             net_input = nn.Sequential(*list(net.children())[:-4]).cuda()
             Feature_output = net_input(inputs)
@@ -135,7 +135,7 @@ for i in range(1, SubjectNum):
             restOutput = torch.zeros(prediction.size(0), 1).cuda()
             FinOutput_hand = torch.cat((armOutput, handOutput, restOutput), 1)
 
-            loss = criterion(Decision_output, targets)
+            loss = criterion(Decision_output, label)
             lossSpecific_arm = Training_criterion(FinOutput_arm, Origin_label, Decision_output, batchSize)
             lossSpecific_hand = Training_criterion(FinOutput_hand, Origin_label, Decision_output, batchSize)
 
@@ -145,7 +145,7 @@ for i in range(1, SubjectNum):
             optimizer_arm.step()
             optimizer_hand.step()
             trainLoss+=lossAll.item()
-            total += targets_origin.size(0)
+            total += Origin_label.size(0)
 
     def Selection_validation(epoch):
         global bestAcc
