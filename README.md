@@ -6,9 +6,9 @@ ICASSP 2020-2020 IEEE International Conference on Acoustics, Speech and Signal P
 This was originally written, and heavily relies on using:
 
 * Specifically
- * python >= 3.7
- * scipy >= 1.5.2
- * pytorch >= 1.6
+  * python >= 3.7
+  * scipy >= 1.5.2
+  * pytorch >= 1.6
 
 # Dataset Info.
 The dataset used in this study has been extended as:
