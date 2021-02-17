@@ -11,3 +11,12 @@ This was originally written, and heavily relies on using:
 * scipy ~= 1.5.2
 
 * pytorch >= 1.6
+
+# Dataset Info.
+The dataset used in this study has been extended as:
+
+* Multimodal signal dataset for 11 intuitive movement tasks from single upper extremity during multiple recording sessions, GigaScience, Volume 9, Issue 10, October 2020, giaa098
+(https://doi.org/10.1093/gigascience/giaa098)
+
+# Repository 
+* http://gigadb.org/dataset/100788
