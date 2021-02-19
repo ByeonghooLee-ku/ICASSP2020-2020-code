@@ -12,6 +12,8 @@ import torch.nn as nn
 import torch.utils.data
 import torch.backends.cudnn as cudnn
 import torch.optim as optim
+from training import *
+from validation import *
 
 SubjectNum = 1  #Number of subjects
 Num_ArmTrSamples = 1 #Number of arm-reaching samples (training samples)
