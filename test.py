@@ -37,16 +37,16 @@ def Test():
                     restOutput = torch.zeros(Decision_output.size(0), 1).cuda()
                     FinOutput_arm = torch.cat((armOutput, handOutput, restOutput), 1)
                     _, Arm_prediction = FinOutput_arm.max(1)
-                    FinOutput_arm = FinOutput_arm.item()
+                    Prob_arm = max(FinOutput_arm)
 
                     handOutput = net_Hand(Feature_output)
                     armOutput = torch.zeros(Decision_output.size(0), armNum).cuda()
                     restOutput = torch.zeros(Decision_output.size(0), 1).cuda()
                     FinOutput_hand = torch.cat((armOutput, handOutput, restOutput), 1)
                     _, Hand_prediction = FinOutput_hand.max(1)
-                    FinOutput_hand = FinOutput_hand.item()
+                    Prob_hand = max(FinOutput_hand)
 
-                if FinOutput_arm > FinOutput_hand:
+                if Prob_arm > Prob_hand:
                     Fin_prediction = Arm_prediction
                 else:
                     Fin_prediction = Hand_prediction
