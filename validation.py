@@ -37,7 +37,7 @@ def Selection_validation(epoch):
                     FinOutput_arm = torch.cat((armOutput, handOutput, restOutput), 1)
                     lossSpecific_arm = criterion(FinOutput_arm, Origin_label)
                     _, Arm_prediction = FinOutput_arm.max(1)
-                    Prob_arm = max(FinOutput_arm)
+                    Prob_arm = F.softmax(FinOutput_arm[0])
                 
                     handOutput = net_Hand(Feature_output)
                     armOutput = torch.zeros(predicted.size(0), armNum).cuda()
@@ -45,9 +45,9 @@ def Selection_validation(epoch):
                     FinOutput_hand = torch.cat((armOutput, handOutput, restOutput), 1)
                     lossSpecific_hand = criterion(FinOutput_hand, Origin_label)
                     _, Hand_prediction = FinOutput_hand.max(1)
-                    Prob_hand = max(FinOutput_hand)
+                    Prob_hand = F.softmax(FinOutput_hand[0])
 
-                    if Prob_arm > Prob_hand:
+                    if max(Prob_arm) > max(Prob_hand):
                         Fin_prediction = Arm_prediction
                         lossSpecific = lossSpecific_arm
                     else:
