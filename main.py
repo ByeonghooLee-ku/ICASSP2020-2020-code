@@ -105,14 +105,7 @@ for i in range(1, SubjectNum):
     armNum=2 #Number of arm-reaching classes
     handNum=2 #Number of hand-related classes
 
-    net = '.'
-    net_Arm = '.'
-    net_Hand= '.'
-
     for trainingIdx in range(totalTraining):
-        del net
-        del net_Arm
-        del net_Hand
         print(str(trainingIdx)+'th training')
         print('==> Building Model...')
 
