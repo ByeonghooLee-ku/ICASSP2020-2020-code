@@ -45,6 +45,7 @@ class Shared(nn.Module):
                 out = self.temporal(Cropped_Inputs)
                 out = self.spatial(out)
                 out = self.avgpool1(out)
+                featureOutput = out
                 out = self.conv1(out)
                 out = self.avgpool2(out)
                 out = out.view(out.size(0), -1)
@@ -54,6 +55,7 @@ class Shared(nn.Module):
                 out = self.temporal(Cropped_Inputs)
                 out = self.spatial(out)
                 out = self.avgpool1(out)
+                featureOutput += out
                 out = self.conv1(out)
                 out = self.avgpool2(out)
                 out = out.view(out.size(0), -1)
@@ -61,8 +63,8 @@ class Shared(nn.Module):
                 prediction += out
 
         prediction = prediction/501
-
-        return prediction
+        featureOutput = featureOutput/501
+        return prediction, featureOutput
 
 
 class Arm(nn.Module):
