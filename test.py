@@ -19,29 +19,26 @@ def Test():
                 net_Arm.load_state_dict(weights['net_Arm'])
                 net_Hand.load_state_dict(weights['net_Hand'])
 
-                net_input = nn.Sequential(*list(Shared.children())[:-4]).cuda()
-                Feature_output = net_input(inputs)
-                net_decision = nn.Sequential(*list(Shared.children())[-4:]).cuda()
-                Decision_output = net_decision(Feature_output)
+                prediction, FeatureOutput = net(inputs)
 
-                if Decision_output == 2:
-                    restOutput = torch.ones(Decision_output.size(0), 1).cuda()
-                    armOutput = torch.zeros(Decision_output.size(0), armNum).cuda()
-                    handOutput = torch.zeros(Decision_output.size(0), handNum).cuda()
+                if prediction == 2:
+                    restOutput = torch.ones(prediction.size(0), 1).cuda()
+                    armOutput = torch.zeros(prediction.size(0), armNum).cuda()
+                    handOutput = torch.zeros(prediction.size(0), handNum).cuda()
                     FinOutput_rest = torch.cat((armOutput, handOutput, restOutput), 1)
                     _, prediction = FinOutput_rest.max(1)
 
                 else:
                     armOutput = net_Arm(Feature_output)
-                    handOutput = torch.zeros(Decision_output.size(0), handNum).cuda()
-                    restOutput = torch.zeros(Decision_output.size(0), 1).cuda()
+                    handOutput = torch.zeros(prediction.size(0), handNum).cuda()
+                    restOutput = torch.zeros(prediction.size(0), 1).cuda()
                     FinOutput_arm = torch.cat((armOutput, handOutput, restOutput), 1)
                     _, Arm_prediction = FinOutput_arm.max(1)
                     Prob_arm = F.softmax(FinOutput_arm[0])
 
                     handOutput = net_Hand(Feature_output)
-                    armOutput = torch.zeros(Decision_output.size(0), armNum).cuda()
-                    restOutput = torch.zeros(Decision_output.size(0), 1).cuda()
+                    armOutput = torch.zeros(prediction.size(0), armNum).cuda()
+                    restOutput = torch.zeros(prediction.size(0), 1).cuda()
                     FinOutput_hand = torch.cat((armOutput, handOutput, restOutput), 1)
                     _, Hand_prediction = FinOutput_hand.max(1)
                     Prob_hand = F.softmax(FinOutput_hand[0])
