@@ -128,9 +128,4 @@ for i in range(1, SubjectNum):
             Selection_training(epoch)
             Selection_validation(epoch)
             
-        print('current best acc is: ',bestAcc)
-        f = open('Results.txt', 'a')
-        print(bestAcc, file=f)
-        print("\n")
-
     Test()
