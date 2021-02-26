@@ -31,8 +31,8 @@ def Selection_training(epoch):
 
             inputSize = Origin_label.size(0)[0]
             loss = criterion(prediction, label)
-            lossSpecific_arm = Training_criterion(FinOutput_arm, Origin_label, Decision_output, inputSize)
-            lossSpecific_hand = Training_criterion(FinOutput_hand, Origin_label, Decision_output, inputSize)
+            lossSpecific_arm = Training_criterion(FinOutput_arm, Origin_label, prediction, inputSize)
+            lossSpecific_hand = Training_criterion(FinOutput_hand, Origin_label, prediction, inputSize)
 
             lossAll = loss + lossSpecific_hand + lossSpecific_arm
             lossAll.backward()
