@@ -53,9 +53,9 @@ class Shared(nn.Module):
                 Cropped_Inputs = x[:, :, :, 0+i:500+i]
                 out = self.temporal(Cropped_Inputs)
                 out = self.spatial(out)
-                out = self.maxpool1(out)
+                out = self.avgpool1(out)
                 out = self.conv1(out)
-                out = self.maxpool2(out)
+                out = self.avgpool2(out)
                 out = out.view(out.size(0), -1)
                 out = self.fc(out)
                 prediction += out
@@ -74,21 +74,21 @@ class Arm(nn.Module):
             nn.BatchNorm2d(72),
             nn.ELU(True),
         )
-        self.maxpool1 = nn.AvgPool2d([1, mean_pool], stride=[1, mean_pool], padding=0)
+        self.avgpool1 = nn.AvgPool2d([1, mean_pool], stride=[1, mean_pool], padding=0)
 
         self.conv2 = nn.Sequential(
             nn.Conv2d(72, 144, kernel_size=[1, kernel_size], padding=0),
             nn.BatchNorm2d(144),
             nn.ELU(True),
         )
-        self.maxpool2 = nn.AvgPool2d([1, mean_pool], stride=[1, mean_pool], padding=0)
+        self.avgpool2 = nn.AvgPool2d([1, mean_pool], stride=[1, mean_pool], padding=0)
 
         self.conv3=nn.Sequential(
             nn.Conv2d(144,288,kernel_size=[1,kernel_size],padding=0),
             nn.BatchNorm2d(288),
             nn.ELU(True),
         )
-        self.maxpool3 = nn.AvgPool2d([1, mean_pool], stride=[1, mean_pool], padding=0)
+        self.avgpool3 = nn.AvgPool2d([1, mean_pool], stride=[1, mean_pool], padding=0)
 
         self.fc = nn.Linear(Final_output, self.outputSize)
 
@@ -97,21 +97,21 @@ class Arm(nn.Module):
             if i == 1:
                 Cropped_Inputs = x[:,:,:, 0:500]
                 out = self.conv1(Cropped_Inputs)
-                out = self.maxpool1(out)
+                out = self.avgpool1(out)
                 out = self.conv2(out)
-                out = self.maxpool2(out)
+                out = self.avgpool2(out)
                 out = self.conv3(out)
-                out = self.maxpool3(out)
+                out = self.avgpool3(out)
                 out = out.view(out.size(0), -1)
                 prediction = self.fc(out)
             else:
                 Cropped_Inputs = x[:, :, :, 0+i:500+i]
                 out = self.conv1(Cropped_Inputs)
-                out = self.maxpool1(out)
+                out = self.avgpool1(out)
                 out = self.conv2(out)
-                out = self.maxpool2(out)
+                out = self.avgpool2(out)
                 out = self.conv3(out)
-                out = self.maxpool3(out)
+                out = self.avgpool3(out)
                 out = out.view(out.size(0), -1)
                 prediction = self.fc(out)
                 prediction += out
@@ -130,28 +130,28 @@ class Hand(nn.Module):
             nn.BatchNorm2d(72),
             nn.ELU(True),
         )
-        self.maxpool1 = nn.AvgPool2d([1, mean_pool], stride=[1, mean_pool], padding=0)
+        self.avgpool1 = nn.AvgPool2d([1, mean_pool], stride=[1, mean_pool], padding=0)
 
         self.conv2 = nn.Sequential(
             nn.Conv2d(72, 144, kernel_size=[1, kernel_size], padding=0),
             nn.BatchNorm2d(144),
             nn.ELU(True),
         )
-        self.maxpool2 = nn.AvgPool2d([1, mean_pool], stride=[1, mean_pool], padding=0)
+        self.avgpool2 = nn.AvgPool2d([1, mean_pool], stride=[1, mean_pool], padding=0)
 
         self.conv3=nn.Sequential(
             nn.Conv2d(144,288,kernel_size=[1,kernel_size],padding=0),
             nn.BatchNorm2d(288),
             nn.ELU(True),
         )
-        self.maxpool3 = nn.AvgPool2d([1, mean_pool], stride=[1, mean_pool], padding=0)
+        self.avgpool3 = nn.AvgPool2d([1, mean_pool], stride=[1, mean_pool], padding=0)
 
         self.conv4 = nn.Sequential(
             nn.Conv2d(288, 288, kernel_size=[1, kernel_size], padding=0),
             nn.BatchNorm2d(288),
             nn.ELU(True),
         )
-        self.maxpool4 = nn.AvgPool2d([1, mean_pool], stride=[1, mean_pool], padding=0)
+        self.avgpool4 = nn.AvgPool2d([1, mean_pool], stride=[1, mean_pool], padding=0)
 
         self.view = nn.Sequential(
             Flatten()
@@ -163,27 +163,28 @@ class Hand(nn.Module):
             if i == 1:
                 Cropped_Inputs = x[:,:,:, 0:500]
                 out = self.conv1(Cropped_Inputs)
-                out = self.maxpool1(out)
+                out = self.avgpool1(out)
                 out = self.conv2(out)
-                out = self.maxpool2(out)
+                out = self.avgpool2(out)
                 out = self.conv3(out)
-                out = self.maxpool3(out)
+                out = self.avgpool3(out)
                 out = self.conv4(out)
-                out = self.maxpool4(out)
+                out = self.avgpool4(out)
                 out = out.view(out.size(0), -1)
                 prediction = self.fc(out)
             else:
                 Cropped_Inputs = x[:, :, :, 0+i:500+i]
                 out = self.conv1(Cropped_Inputs)
-                out = self.maxpool1(out)
+                out = self.avgpool1(out)
                 out = self.conv2(out)
-                out = self.maxpool2(out)
+                out = self.avgpool2(out)
                 out = self.conv3(out)
-                out = self.maxpool3(out)
+                out = self.avgpool3(out)
                 out = self.conv4(out)
-                out = self.maxpool4(out)
+                out = self.avgpool4(out)
                 out = out.view(out.size(0), -1)
-                prediction = self.fc(out)
+                out = self.fc(out)
+                prediction += out
 
         prediction = prediction/501
 
