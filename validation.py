@@ -13,12 +13,9 @@ def Selection_validation(epoch):
             for batchIdx, (inputs, label, Origin_label) in enumerate(testloader):
                 inputs = inputs[:, np.newaxis, :, :]
                 inputs, label, Origin_label = inputs.to(device, dtype=torch.float), label.to(device, dtype=torch.long), Origin_label.to(device, dtype=torch.long)
-                net_input = nn.Sequential(*list(net.children())[:-4]).cuda()
-                Feature_output = net_input(inputs)
-                net_decision = nn.Sequential(*list(net.children())[-4:]).cuda()
-                Decision_output = net_decision(Feature_output)
-                loss = criterion(Decision_output, label)
-                _, predicted = Decision_output.max(1)
+                prediction, FeatureOutput = net(inputs)
+                loss = criterion(prediction, label)
+                _, predicted = prediction.max(1)
                 total_1 += label.size(0)
                 correct_1 += predicted.eq(label).sum().item()
 
