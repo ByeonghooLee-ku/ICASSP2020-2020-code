@@ -12,11 +12,8 @@ def Selection_training(epoch):
             inputs = inputs[:, np.newaxis, :, :]
             inputs, label, Origin_label, = inputs.to(device, dtype=torch.float), label.to(device, dtype=torch.long), Origin_label.to(device, dtype=torch.long)
             optimizer.zero_grad()
-            net_input = nn.Sequential(*list(net.children())[:-4]).cuda()
-            Feature_output = net_input(inputs)
-            net_decision = nn.Sequential(*list(net.children())[-4:]).cuda()
-            Decision_output = net_decision(Feature_output)
-            _, prediction = Decision_output.max(1)
+            prediction, FeatureOutput = net(inputs)
+            _, prediction = prediction.max(1)
             total += label.size(0)
             correct += prediction.eq(label).sum().item()
 
@@ -32,9 +29,10 @@ def Selection_training(epoch):
             restOutput = torch.zeros(prediction.size(0), 1).cuda()
             FinOutput_hand = torch.cat((armOutput, handOutput, restOutput), 1)
 
+            inputSize = Origin_label.size(0)[0]
             loss = criterion(Decision_output, label)
-            lossSpecific_arm = Training_criterion(FinOutput_arm, Origin_label, Decision_output, batchSize)
-            lossSpecific_hand = Training_criterion(FinOutput_hand, Origin_label, Decision_output, batchSize)
+            lossSpecific_arm = Training_criterion(FinOutput_arm, Origin_label, Decision_output, inputSize)
+            lossSpecific_hand = Training_criterion(FinOutput_hand, Origin_label, Decision_output, inputSize)
 
             lossAll = loss + lossSpecific_hand + lossSpecific_arm
             lossAll.backward()
