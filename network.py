@@ -57,7 +57,7 @@ class Shared(nn.Module):
                 out = self.conv1(out)
                 out = self.maxpool2(out)
                 out = out.view(out.size(0), -1)
-                prediction = self.fc(out)
+                out = self.fc(out)
                 prediction += out
 
         prediction = prediction/501
