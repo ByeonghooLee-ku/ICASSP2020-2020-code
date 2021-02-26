@@ -30,7 +30,7 @@ def Selection_training(epoch):
             FinOutput_hand = torch.cat((armOutput, handOutput, restOutput), 1)
 
             inputSize = Origin_label.size(0)[0]
-            loss = criterion(Decision_output, label)
+            loss = criterion(prediction, label)
             lossSpecific_arm = Training_criterion(FinOutput_arm, Origin_label, Decision_output, inputSize)
             lossSpecific_hand = Training_criterion(FinOutput_hand, Origin_label, Decision_output, inputSize)
 
