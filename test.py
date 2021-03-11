@@ -4,7 +4,7 @@ def Test():
         correct = 0
         total = 0
 
-        testloader = torch.utils.data.DataLoader(test, batch_size=batchSize, shuffle=False)
+        testloader = torch.utils.data.DataLoader(test, batch_size=batchSize, shuffle=True)
         with torch.no_grad():
             for batchIdx, (inputs, label) in enumerate(testloader):
                 inputs = inputs[:, np.newaxis, :, :]
